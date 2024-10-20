@@ -1,0 +1,170 @@
+//
+// Created by Софья Фролова  on 21.10.2024.
+//
+
+#ifndef MATRIX_LIST_H
+#define MATRIX_LIST_H
+
+#endif //MATRIX_LIST_H
+#include <iostream>
+
+template <class T>
+class List {
+
+    struct Node{
+        T data;
+        Node * next;
+        Node(T d, Node* n){
+            data = d;
+            next = n;
+        }
+    };
+    Node * first;
+public:
+
+    List(): first(nullptr) {};
+
+    List (const List& other){
+        if (!other.first){
+            first = nullptr;
+        }
+
+        this->first = new Node (other.first->data, nullptr);
+        Node * current = first, * ocurrent = other.first;
+
+        while (ocurrent->next) {
+            current->next = new Node(ocurrent->next->data, nullptr);
+            current = current->next;
+            ocurrent = ocurrent->next;
+        }
+    }
+
+    List(int n, T deflt = T()) {
+        if (n==0 or n < 0) {
+            throw "List doesn't exict";
+        }
+
+        first = new Node (deflt, nullptr);
+        //Node * tmp = new Node (T(), nullptr);
+        Node* current = first;
+
+        for (int i = 0; i<n; i++){
+            Node* tmp = new Node (deflt, nullptr);
+            current->next = tmp;
+            current = current->next;
+        }
+
+    }
+    ~List() {
+        while (first) {
+            Node * second = first->next;
+            delete first;
+            first = second;
+        }
+    }
+
+    List& operator= (const List& other) {
+        if (!other.first){
+            first = nullptr;
+        }
+
+        this->first = new Node (other.first->data, nullptr);
+        Node* current = first, * ocurrent = other.first;
+
+        while (ocurrent->next) {
+            current->next = new Node(ocurrent->next->data, nullptr);
+            current = current->next;
+            ocurrent = ocurrent->next;
+        }
+    }
+
+
+    void print() {
+        Node* current = first;
+        while(current){
+            std::cout<<current->next<<" ";
+            current = current->next;
+        }
+    }
+
+    int GetLen() {
+        Node* current = first;
+        int k = 0;
+        while(current){
+            current = current->next;
+            k++;
+        }
+        return k;
+    }
+
+    T& operator[] (int index){
+
+        if((index>=this->GetLen()) || (index<0)){
+            throw "Wrong index";
+        }
+        Node* current = first;
+        for (int i = 1; i<index; i++) {
+            current = current->next;
+        }
+        return current->data;
+    }
+
+    inline List<T>::Node* insert(T value,Node* prev) {
+        Node* tmp= new Node;
+        tmp->next = prev->next;
+        tmp->data = value;
+        prev->next = tmp;
+        return tmp;
+    }
+
+    inline List<T>::Node* insert_front(T value) {
+        Node* first_first = new Node;
+        first_first->next = first;
+        first_first->data = value;
+        first = first_first;
+        return first;
+    }
+
+    inline List<T>::Node* erase(T value,Node* prev){
+        Node* tmp = prev->next;
+        if (!prev->next) {
+            throw "Element not found";
+        }
+        prev->next = tmp->next;
+        delete tmp;
+        return prev->next;
+    }
+
+    inline List<T>::Node* erase_front(T value) {
+        Node* tmp = first;
+        first = tmp-> next;
+        delete tmp;
+        return first;
+    }
+
+    inline List<T>::Node* find(T value) {
+        Node* current = first;
+        while(current){
+            if (current->data == value) {
+                return current;
+            }
+            current = current->next;
+        }
+        return nullptr;
+    }
+
+    size_t size() {
+        int size = 0;
+        Node* current = first;
+        while(current) {
+            size++;
+            current = current->next;
+        }
+        return size;
+    }
+
+    inline List<T>::Node* get_first(){
+        return first;
+    }
+
+};
