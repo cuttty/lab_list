@@ -14,6 +14,10 @@ class List {
     struct Node{
         T data;
         Node * next;
+        Node(){
+            data = 0;
+            next = nullptr;
+        }
         Node(T d, Node* n){
             data = d;
             next = n;
@@ -25,10 +29,11 @@ public:
     List(): first(nullptr) {};
 
     List (const List& other){
+        //std::cout<<3;
         if (!other.first){
             first = nullptr;
         }
-
+        //std::cout<<2;
         this->first = new Node (other.first->data, nullptr);
         Node * current = first, * ocurrent = other.first;
 
@@ -39,11 +44,11 @@ public:
         }
     }
 
-    List(int n, T deflt = T()) {
+    explicit List(int n, T deflt = T()) {
         if (n==0 or n < 0) {
             throw "List doesn't exict";
         }
-
+       // std::cout<<2;
         first = new Node (deflt, nullptr);
         //Node * tmp = new Node (T(), nullptr);
         Node* current = first;
@@ -87,19 +92,19 @@ public:
         }
     }
 
-    int GetLen() {
+   /* int GetLen() {
         Node* current = first;
-        int k = 0;
+        int k = -1;
         while(current){
             current = current->next;
             k++;
         }
         return k;
-    }
+    }*/
 
     T& operator[] (int index){
 
-        if((index>=this->GetLen()) || (index<0)){
+        if((index>=this->size()) || (index<0)){
             throw "Wrong index";
         }
         Node* current = first;
@@ -109,8 +114,15 @@ public:
         return current->data;
     }
 
-    inline List<T>::Node* insert(T value,Node* prev) {
+    inline List<T>::Node* insert(T value, int index) {
+        if((index>=this->size()) || (index<0)){
+            throw "Wrong index";
+        }
         Node* tmp= new Node;
+        Node* prev = first;
+        for (int i = 1; i<index; i++){
+            prev = prev->next;
+        }
         tmp->next = prev->next;
         tmp->data = value;
         prev->next = tmp;
@@ -125,7 +137,15 @@ public:
         return first;
     }
 
-    inline List<T>::Node* erase(T value,Node* prev){
+    inline List<T>::Node* erase(int index){
+        if((index>=this->size()) || (index<0)){
+            throw "Wrong index";
+        }
+        //Node* tmp= new Node;
+        Node* prev = first;
+        for (int i = 1; i<index; i++){
+            prev = prev->next;
+        }
         Node* tmp = prev->next;
         if (!prev->next) {
             throw "Element not found";
@@ -135,7 +155,7 @@ public:
         return prev->next;
     }
 
-    inline List<T>::Node* erase_front(T value) {
+    inline List<T>::Node* erase_front() {
         Node* tmp = first;
         first = tmp-> next;
         delete tmp;
@@ -154,7 +174,7 @@ public:
     }
 
     size_t size() {
-        int size = 0;
+        int size = -1;
         Node* current = first;
         while(current) {
             size++;
