@@ -7,7 +7,7 @@ TEST(List, can_create_empty_list)
 {
 ASSERT_NO_THROW(List<int> L1());
 }
-
+//
 TEST(List, can_create_copy_list)
 {
     List<int> L1(1);

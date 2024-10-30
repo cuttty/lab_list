@@ -29,7 +29,7 @@ private:
 public:
 
     List(): first(nullptr) {};
-
+ //
     List (const List& other){
         //std::cout<<3;
         if (!other.first){
