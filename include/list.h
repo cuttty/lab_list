@@ -11,6 +11,7 @@
 template <class T>
 class List {
 
+public:
     struct Node{
         T data;
         Node * next;
@@ -23,6 +24,7 @@ class List {
             next = n;
         }
     };
+private:
     Node * first;
 public:
 
@@ -53,7 +55,7 @@ public:
         //Node * tmp = new Node (T(), nullptr);
         Node* current = first;
 
-        for (int i = 0; i<n; i++){
+        for (int i = 0; i < n - 1; i++){
             Node* tmp = new Node (deflt, nullptr);
             current->next = tmp;
             current = current->next;
@@ -68,39 +70,52 @@ public:
         }
     }
 
-    List& operator= (const List& other) {
-        if (!other.first){
+    List& operator=(const List& other) {
+        if (!other.first) {
             first = nullptr;
+            return *this;
         }
 
-        this->first = new Node (other.first->data, nullptr);
-        Node* current = first, * ocurrent = other.first;
+        while (first) {
+            Node* tmp = first->next;
+            delete first;
+            first = tmp;
+        }
+
+        first = new Node(other.first->data, nullptr);
+        Node* current = first;
+        Node* ocurrent = other.first;
 
         while (ocurrent->next) {
-            current->next = new Node(ocurrent->next->data, nullptr);
+            current->next = new Node(ocurrent -> next -> data, nullptr);
+            current = current -> next;
+            ocurrent = ocurrent -> next;
+        }
+
+        return *this;
+    }
+
+    bool operator==(const List& l) const
+    {
+        Node* current = this->first;
+        Node* ocurrent = l.first;
+
+        while (current) {
+            if (ocurrent == nullptr) return 0;
+
+            if (current->data != ocurrent->data) return 0;
+
             current = current->next;
             ocurrent = ocurrent->next;
         }
+
+        if (ocurrent != nullptr)
+            return 0;
+        else
+            return 1;
+
     }
 
-
-    void print() {
-        Node* current = first;
-        while(current){
-            std::cout<<current->next<<" ";
-            current = current->next;
-        }
-    }
-
-   /* int GetLen() {
-        Node* current = first;
-        int k = -1;
-        while(current){
-            current = current->next;
-            k++;
-        }
-        return k;
-    }*/
 
     T& operator[] (int index){
 
@@ -108,21 +123,14 @@ public:
             throw "Wrong index";
         }
         Node* current = first;
-        for (int i = 1; i<index; i++) {
+        for (int i = 1; i < index; i++) {
             current = current->next;
         }
         return current->data;
     }
 
-    inline List<T>::Node* insert(T value, int index) {
-        if((index>=this->size()) || (index<0)){
-            throw "Wrong index";
-        }
-        Node* tmp= new Node;
-        Node* prev = first;
-        for (int i = 1; i<index; i++){
-            prev = prev->next;
-        }
+    inline List<T>::Node* insert(T value, Node* prev) {
+        Node* tmp = new Node;
         tmp->next = prev->next;
         tmp->data = value;
         prev->next = tmp;
@@ -137,22 +145,12 @@ public:
         return first;
     }
 
-    inline List<T>::Node* erase(int index){
-        if((index>=this->size()) || (index<0)){
-            throw "Wrong index";
-        }
-        //Node* tmp= new Node;
-        Node* prev = first;
-        for (int i = 1; i<index; i++){
-            prev = prev->next;
-        }
-        Node* tmp = prev->next;
-        if (!prev->next) {
-            throw "Element not found";
-        }
-        prev->next = tmp->next;
-        delete tmp;
-        return prev->next;
+    inline List<T>::Node* erase(Node* prev){
+       Node* tmp = prev->next;
+       if (!(prev->next)) {throw 1;}
+       prev->next = tmp->next;
+       delete tmp;
+
     }
 
     inline List<T>::Node* erase_front() {
@@ -174,7 +172,7 @@ public:
     }
 
     size_t size() {
-        int size = -1;
+        int size = 0;
         Node* current = first;
         while(current) {
             size++;
@@ -185,6 +183,26 @@ public:
 
     inline List<T>::Node* get_first(){
         return first;
+    }
+
+    friend std:: istream& operator>>(std::istream& istr, List& l)
+    {
+        Node* current = l.first;
+        while (current) {
+            istr>> current->data;
+            current = current->next;
+        }
+        return istr;
+    }
+
+    friend std:: ostream& operator<<(std::ostream& ostr, List& l)
+    {
+        Node* current = l.first;
+        while (current) {
+            ostr << current->data;
+            current = current->next;
+        }
+        return ostr;
     }
 
 };
