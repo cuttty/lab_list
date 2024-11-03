@@ -132,3 +132,44 @@ TEST(List, can_get_first)
     List<int> L1(5, 6);
     ASSERT_EQ(L1.get_first()->data, 6);
 }
+
+TEST(List, can_insert_in_end) {
+    List<int> L1(4, 5);
+    std::cout<<L1<< std:: endl;
+    List<int> L_exp(5, 5);
+    std::cout<<L_exp<< std:: endl;
+    L1[3] = 1;
+    std::cout<<L1<< std:: endl;
+    L_exp[3] = 1;
+    std::cout<<L_exp<< std:: endl;
+    L1.insert_end (5);
+    std::cout<<L1<< std:: endl;
+    ASSERT_EQ(L1, L_exp);
+}
+TEST(List, can_isert_first_element_empty_list)
+{
+    List<int> L1;
+    List<int> L_exp(1, 5);
+    L1.insert_front(5);
+    //std::cout<<L1<< std:: endl;
+    ASSERT_EQ(L1, L_exp);
+
+}
+TEST(List, cant_erase_first_element_empty_list)
+{
+    List<int> L1;
+    ASSERT_ANY_THROW(L1.erase_front());
+}
+TEST(List, can_erase_end) {
+List<int> L1(5, 5);
+//std::cout<<L1<< std:: endl;
+List<int> L_exp(4, 5);
+//std::cout<<L_exp<< std:: endl;
+L1[3] = 1;
+std::cout<<L1<< std:: endl;
+L_exp[3] = 1;
+std::cout<<L_exp<< std:: endl;
+L1.erase_end();
+std::cout<<L1<< std:: endl;
+ASSERT_EQ(L1, L_exp);
+}

@@ -70,17 +70,24 @@ public:
         }
     }
 
+    void Clear() {
+        Node* current = first;
+        Node* tmp = nullptr;
+        while (current) {
+            tmp = current->next;
+            delete current;
+            current = tmp;
+        }
+        first = nullptr;
+    }
+
     List& operator=(const List& other) {
         if (!other.first) {
             first = nullptr;
             return *this;
         }
 
-        while (first) {
-            Node* tmp = first->next;
-            delete first;
-            first = tmp;
-        }
+        this->Clear();
 
         first = new Node(other.first->data, nullptr);
         Node* current = first;
@@ -131,7 +138,9 @@ public:
 
     inline List<T>::Node* insert(T value, Node* prev) {
         Node* tmp = new Node;
-        tmp->next = prev->next;
+        if (prev->next) {
+            tmp->next = prev->next;
+        }
         tmp->data = value;
         prev->next = tmp;
         return tmp;
@@ -145,8 +154,23 @@ public:
         return first;
     }
 
+    inline List<T>::Node* insert_end(T value) {
+        Node* current = first;
+
+
+        while (current->next) {
+            current = current -> next;
+        }
+
+        insert(value, current);
+        return current->next;
+    }
+
     inline List<T>::Node* erase(Node* prev){
-       Node* tmp = prev->next;
+       if (!prev) {
+           throw "Prev nullptr";
+       }
+        Node* tmp = prev->next;
        if (!(prev->next)) {throw 1;}
        prev->next = tmp->next;
        delete tmp;
@@ -154,9 +178,28 @@ public:
     }
 
     inline List<T>::Node* erase_front() {
+        if(!first) {
+            throw "Empty List";
+        }
         Node* tmp = first;
         first = tmp-> next;
         delete tmp;
+        return first;
+    }
+
+    inline List<T>::Node* erase_end() {
+        if(!first) {
+            throw "Empty List";
+        }
+        Node* current = first;
+
+
+        while ((current->next)->next) {
+            current = current -> next;
+        }
+
+        delete current->next;
+        current ->next = nullptr;
         return first;
     }
 
@@ -204,5 +247,6 @@ public:
         }
         return ostr;
     }
+
 
 };
