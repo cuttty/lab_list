@@ -91,15 +91,15 @@ TEST(List, can_erase_element)
     L1[3] = 2;
     //L1 = 5 5 2 5
     //L2 = 5 5 5
-    //std::cout<<L1<< std:: endl;
-    //std::cout<<L_exp<< std:: endl;
+    std::cout<<L1<< std:: endl;
+    std::cout<<L_exp<< std:: endl;
 
     List<int>::Node* curr = L1.get_first();
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 2; i++)
         curr = curr->next;
 
     L1.erase(curr);
-    //std::cout<<L1<< std:: endl;
+    std::cout<<L1<< std:: endl;
 
     ASSERT_EQ(L1, L_exp);
 }
@@ -135,15 +135,15 @@ TEST(List, can_get_first)
 
 TEST(List, can_insert_in_end) {
     List<int> L1(4, 5);
-    std::cout<<L1<< std:: endl;
+   // std::cout<<L1<< std:: endl;
     List<int> L_exp(5, 5);
-    std::cout<<L_exp<< std:: endl;
+    //std::cout<<L_exp<< std:: endl;
     L1[3] = 1;
-    std::cout<<L1<< std:: endl;
+   // std::cout<<L1<< std:: endl;
     L_exp[3] = 1;
-    std::cout<<L_exp<< std:: endl;
+    //std::cout<<L_exp<< std:: endl;
     L1.insert_end (5);
-    std::cout<<L1<< std:: endl;
+    //std::cout<<L1<< std:: endl;
     ASSERT_EQ(L1, L_exp);
 }
 TEST(List, can_isert_first_element_empty_list)
@@ -166,11 +166,11 @@ List<int> L1(5, 5);
 List<int> L_exp(4, 5);
 //std::cout<<L_exp<< std:: endl;
 L1[3] = 1;
-std::cout<<L1<< std:: endl;
+//std::cout<<L1<< std:: endl;
 L_exp[3] = 1;
-std::cout<<L_exp<< std:: endl;
+//std::cout<<L_exp<< std:: endl;
 L1.erase_end();
-std::cout<<L1<< std:: endl;
+//std::cout<<L1<< std:: endl;
 ASSERT_EQ(L1, L_exp);
 }
 
@@ -179,14 +179,14 @@ TEST(List, can_erase_last_selected) {
     L1[1] = 5;
     L1[2] = 3;
     L1[5] = 5;
-    std::cout<<"L1: "<<L1<< std:: endl;
+    //std::cout<<"L1: "<<L1<< std:: endl;
     List <int> L_exp(5,2);
     L_exp[1] = 5;
     L_exp[2] = 3;
     L_exp[4] = 5;
-    std::cout<<"L_exp: "<< L_exp << std:: endl;
+    //std::cout<<"L_exp: "<< L_exp << std:: endl;
     L1.erase_last_selected(2);
-    std::cout<<"L1 after: "<< L1 << std:: endl;
+    //std::cout<<"L1 after: "<< L1 << std:: endl;
     ASSERT_EQ(L1, L_exp);
     // L1 - 245667, L_exp - 24567,
 
