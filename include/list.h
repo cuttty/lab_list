@@ -130,7 +130,7 @@ public:
             throw "Wrong index";
         }
         Node* current = first;
-        for (int i = 1; i < index; i++) {
+        for (int i = 0; i < index; i++) {
             current = current->next;
         }
         return current->data;
@@ -249,4 +249,37 @@ public:
     }
 
 
+
+
+
+
+    //Задача из предложенного списка 2
+    inline List<T>::Node* erase_last_selected(T value) {
+        Node* current = first;
+        Node* tmp = nullptr;
+        Node* prev = nullptr;
+        if (value == current->data) {
+            tmp = current;
+        }
+        while (current->next->next) {
+            if (value == current->next->data) {
+                tmp = current->next;
+                prev = current;
+            }
+            current = current -> next;
+        }
+        //std::cout << first << std::endl;
+        //std::cout << tmp << std::endl;
+        if (!tmp) {
+            return first;
+        }
+        if (tmp == first) {
+            first= first->next;
+            delete tmp;
+            return first;
+        }
+        prev->next = tmp->next;
+        delete tmp;
+        return first;
+    }
 };

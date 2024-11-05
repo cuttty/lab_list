@@ -173,3 +173,21 @@ L1.erase_end();
 std::cout<<L1<< std:: endl;
 ASSERT_EQ(L1, L_exp);
 }
+
+TEST(List, can_erase_last_selected) {
+    List <int> L1(6,2);
+    L1[1] = 5;
+    L1[2] = 3;
+    L1[5] = 5;
+    std::cout<<"L1: "<<L1<< std:: endl;
+    List <int> L_exp(5,2);
+    L_exp[1] = 5;
+    L_exp[2] = 3;
+    L_exp[4] = 5;
+    std::cout<<"L_exp: "<< L_exp << std:: endl;
+    L1.erase_last_selected(2);
+    std::cout<<"L1 after: "<< L1 << std:: endl;
+    ASSERT_EQ(L1, L_exp);
+    // L1 - 245667, L_exp - 24567,
+
+}
