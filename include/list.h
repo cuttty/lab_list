@@ -39,7 +39,7 @@ public:
         this->first = new Node (other.first->data, nullptr);
         Node * current = first, * ocurrent = other.first;
 
-        while (ocurrent->next) {
+       while (ocurrent->next) {
             current->next = new Node(ocurrent->next->data, nullptr);
             current = current->next;
             ocurrent = ocurrent->next;
@@ -281,5 +281,62 @@ public:
         prev->next = tmp->next;
         delete tmp;
         return first;
+    }
+
+
+
+    //class iterator
+    class Iterator {
+        Node *curr;
+
+    public:
+
+        Iterator(Node *node) {
+            curr = node;
+        }
+
+        Iterator& operator++() {
+            if (!curr->next) {
+                throw "Out of range";
+            }
+            curr = curr->next;
+            return *this;
+        }
+
+        //int* p = &y;
+
+        Iterator operator++(int) {
+            if (!curr->next) {
+                throw "Out of range";
+            }
+            Iterator copy = *this;
+            curr = curr->next;
+            return copy;
+        }
+
+        T& operator*() {
+            return curr->data;
+        }
+
+        T* operator->() {
+            return &(curr->data);
+        }
+
+        friend bool operator!=(const Iterator& it1, const Iterator& it2) {
+            return (it1.curr != it2.curr);
+        }
+
+        friend bool operator==(const Iterator& it1, const Iterator& it2) {
+            return (it1.curr == it2.curr);
+        }
+
+    };
+
+    Iterator begin() {
+        return Iterator(first);
+    }
+
+    Iterator end() {
+        return Iterator(nullptr);
     }
 };

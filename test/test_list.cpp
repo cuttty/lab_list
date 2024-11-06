@@ -44,18 +44,18 @@ TEST(List, can_insert_element)
 {
     List<int> L1(3, 6);
     List<int> L_exp(4, 6);
-    std::cout<<L1<< std:: endl;
+    //std::cout<<L1<< std:: endl;
     L1[2]=3;
-    std::cout<<L1<< std:: endl;
+    //std::cout<<L1<< std:: endl;
     L_exp[2]=3;
-    std::cout<<L_exp<< std:: endl;
+    //std::cout<<L_exp<< std:: endl;
 
     List<int>::Node* curr = L1.get_first();
     for (int i = 0; i < 2; i++)
         curr = curr->next;
 
     L1.insert(6, curr);
-    std::cout<<L1<< std:: endl;
+   // std::cout<<L1<< std:: endl;
 
 
     ASSERT_EQ(L1, L_exp);
@@ -91,15 +91,15 @@ TEST(List, can_erase_element)
     L1[3] = 2;
     //L1 = 5 5 2 5
     //L2 = 5 5 5
-    std::cout<<L1<< std:: endl;
-    std::cout<<L_exp<< std:: endl;
+    //std::cout<<L1<< std:: endl;
+    //std::cout<<L_exp<< std:: endl;
 
     List<int>::Node* curr = L1.get_first();
     for (int i = 0; i < 2; i++)
         curr = curr->next;
 
     L1.erase(curr);
-    std::cout<<L1<< std:: endl;
+    //std::cout<<L1<< std:: endl;
 
     ASSERT_EQ(L1, L_exp);
 }
@@ -190,4 +190,57 @@ TEST(List, can_erase_last_selected) {
     ASSERT_EQ(L1, L_exp);
     // L1 - 245667, L_exp - 24567,
 
+}
+
+//Teсты итератор
+
+TEST(List, can_begin_iterator) {
+    List<int> L1;
+    //auto it = L1.begin();
+    ASSERT_NO_THROW(auto it = L1.begin(););
+}
+TEST(List, can_end_iterator) {
+    List<int> L1;
+    ASSERT_NO_THROW(auto it = L1.end(););
+}
+
+TEST(List, can_step_forvard) {
+    List<int> L1(2, 7);
+    L1[1] = 3;
+    auto it = L1.begin();
+    it++;
+    ASSERT_EQ(L1[1], *it);
+}
+TEST(List, cant_step_out_of_range) {
+    List<int> L1(2, 7);
+    L1[1] = 3;
+    auto it = L1.begin();
+    it++;
+    ASSERT_ANY_THROW(it++);
+}
+
+TEST(List, can_get_reference) {
+    List<int> L1(2, 7);
+    L1[1] = 3;
+    auto it = L1.begin();
+    it++;
+    ASSERT_EQ(&(L1[1]), it.operator->());
+}
+
+TEST(List, can_compare_equal_iterators) {
+    List<int> L1(2, 7);
+    L1[1] = 3;
+    auto it1 = L1.begin();
+    it1++;
+    auto it2 = L1.begin();
+    it2++;
+    ASSERT_EQ(it1, it2);
+}
+TEST(List, can_compare_not_equal_iterators) {
+    List<int> L1(2, 7);
+    L1[1] = 3;
+    auto it1 = L1.begin();
+    it1++;
+    auto it2 = L1.begin();
+    ASSERT_NE(it1, it2);
 }
