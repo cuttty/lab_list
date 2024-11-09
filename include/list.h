@@ -255,12 +255,24 @@ public:
 
     //Задача из предложенного списка 2
     inline List<T>::Node* erase_last_selected(T value) {
+        if (!first) {
+            throw "Can't delete element in empty list";
+        }
+
+        if (!first->next) {
+            if (first->data == value) {
+                delete first;
+                first = nullptr;
+                return first;
+            } else {
+                return first;
+            }
+        }
         Node* current = first;
+
         Node* tmp = nullptr;
         Node* prev = nullptr;
-        if (value == current->data) {
-            tmp = current;
-        }
+
         while (current->next->next) {
             if (value == current->next->data) {
                 tmp = current->next;

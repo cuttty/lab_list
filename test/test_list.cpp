@@ -192,6 +192,40 @@ TEST(List, can_erase_last_selected) {
 
 }
 
+TEST(List, cant_erase_nonequal_one_element_) {
+    List <int> L1(1,2);
+    List <int> L_exp(1,2);
+    L1.erase_last_selected(3);
+    ASSERT_EQ(L1, L_exp);
+}
+
+TEST (List, cant_erase_in_empty_list) {
+    List <int> L1;//(0);
+    ASSERT_ANY_THROW(L1.erase_last_selected(2));
+}
+TEST(List, can_erase_equal_one_element_) {
+    List <int> L1(1,2);
+    List <int> L_exp;
+    L1.erase_last_selected(2);
+    ASSERT_EQ(L_exp, L1);
+}
+
+TEST(List, cant_erase_no_exist) {
+List <int> L1(6,2);
+L1[1] = 4;
+L1[2] = 5;
+L1[3] = 5;
+L1[4] = 9;
+L1[5] = 8;
+//std::cout<<"L1: "<<L1<< std:: endl;
+List <int> L_exp = L1;
+//std::cout<<"L_exp: "<< L_exp << std:: endl;
+L1.erase_last_selected(7);
+//std::cout<<"L1 after: "<< L1 << std:: endl;
+ASSERT_EQ(L1, L_exp);
+// L1 - 245667, L_exp - 24567,
+}
+
 //Teсты итератор
 
 TEST(List, can_begin_iterator) {
